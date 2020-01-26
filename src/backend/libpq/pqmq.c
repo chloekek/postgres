@@ -321,6 +321,9 @@ pq_parse_errornotice(StringInfo msg, ErrorData *edata)
 			case PG_DIAG_SOURCE_FUNCTION:
 				edata->funcname = pstrdup(value);
 				break;
+			case PG_DIAG_RLS_POLICY_NAME:
+				edata->rls_policy_name = pstrdup(value);
+				break;
 			default:
 				elog(ERROR, "unrecognized error field code: %d", (int) code);
 				break;

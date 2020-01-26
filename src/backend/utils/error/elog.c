@@ -538,6 +538,8 @@ errfinish(int dummy,...)
 		pfree(edata->constraint_name);
 	if (edata->internalquery)
 		pfree(edata->internalquery);
+	if (edata->rls_policy_name)
+		pfree(edata->rls_policy_name);
 
 	errordata_stack_depth--;
 
@@ -1294,6 +1296,9 @@ err_generic_string(int field, const char *str)
 		case PG_DIAG_CONSTRAINT_NAME:
 			set_errdata_field(edata->assoc_context, &edata->constraint_name, str);
 			break;
+		case PG_DIAG_RLS_POLICY_NAME:
+			set_errdata_field(edata->assoc_context, &edata->rls_policy_name, str);
+			break;
 		default:
 			elog(ERROR, "unsupported ErrorData field id: %d", field);
 			break;
@@ -1623,6 +1628,8 @@ CopyErrorData(void)
 		newedata->constraint_name = pstrdup(newedata->constraint_name);
 	if (newedata->internalquery)
 		newedata->internalquery = pstrdup(newedata->internalquery);
+	if (newedata->rls_policy_name)
+		newedata->rls_policy_name = pstrdup(newedata->rls_policy_name);
 
 	/* Use the calling context for string allocation */
 	newedata->assoc_context = CurrentMemoryContext;
@@ -1663,6 +1670,8 @@ FreeErrorData(ErrorData *edata)
 		pfree(edata->constraint_name);
 	if (edata->internalquery)
 		pfree(edata->internalquery);
+	if (edata->rls_policy_name)
+		pfree(edata->rls_policy_name);
 	pfree(edata);
 }
 
@@ -1739,6 +1748,8 @@ ThrowErrorData(ErrorData *edata)
 		newedata->datatype_name = pstrdup(edata->datatype_name);
 	if (edata->constraint_name)
 		newedata->constraint_name = pstrdup(edata->constraint_name);
+	if (edata->rls_policy_name)
+		newedata->rls_policy_name = pstrdup(edata->rls_policy_name);
 	newedata->cursorpos = edata->cursorpos;
 	newedata->internalpos = edata->internalpos;
 	if (edata->internalquery)
@@ -1809,6 +1820,8 @@ ReThrowError(ErrorData *edata)
 		newedata->constraint_name = pstrdup(newedata->constraint_name);
 	if (newedata->internalquery)
 		newedata->internalquery = pstrdup(newedata->internalquery);
+	if (newedata->rls_policy_name)
+		newedata->rls_policy_name = pstrdup(newedata->rls_policy_name);
 
 	/* Reset the assoc_context to be ErrorContext */
 	newedata->assoc_context = ErrorContext;
@@ -3373,6 +3386,12 @@ send_message_to_frontend(ErrorData *edata)
 		{
 			pq_sendbyte(&msgbuf, PG_DIAG_SOURCE_FUNCTION);
 			err_sendstring(&msgbuf, edata->funcname);
+		}
+
+		if (edata->rls_policy_name)
+		{
+			pq_sendbyte(&msgbuf, PG_DIAG_RLS_POLICY_NAME);
+			err_sendstring(&msgbuf, edata->rls_policy_name);
 		}
 
 		pq_sendbyte(&msgbuf, '\0'); /* terminator */

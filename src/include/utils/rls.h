@@ -47,4 +47,6 @@ enum CheckEnableRlsResult
 
 extern int	check_enable_rls(Oid relid, Oid checkAsUser, bool noError);
 
+extern int	errrlspolname(const char *polname);
+
 #endif							/* RLS_H */

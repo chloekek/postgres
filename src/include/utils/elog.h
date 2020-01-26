@@ -401,6 +401,7 @@ typedef struct ErrorData
 	char	   *column_name;	/* name of column */
 	char	   *datatype_name;	/* name of datatype */
 	char	   *constraint_name;	/* name of constraint */
+	char	   *rls_policy_name;	/* name of RLS policy */
 	int			cursorpos;		/* cursor index into query string */
 	int			internalpos;	/* cursor index into internalquery */
 	char	   *internalquery;	/* text of internally-generated query */

@@ -803,7 +803,7 @@ void PQsetSSLKeyPassHook(PQsslKeyPassHook_type hook);
        See <function>PQdefaultSSLKeyPassHook</function> in <literal>libpq</literal>'s
        source code for an example.
       </para>
-       
+
       <para>
        If the user specified an explicit key location,
        its path will be in <literal>conn->pgsslkey</literal> when the callback
@@ -925,9 +925,9 @@ postgresql:///mydb?host=localhost&amp;port=5433
    </para>
 
    <para>
-    Connection <acronym>URI</acronym> needs to be encoded with 
-    <ulink url="https://tools.ietf.org/html/rfc3986#section-2.1">Percent-encoding</ulink> 
-    if it includes symbols with special meaning in any of its parts. 
+    Connection <acronym>URI</acronym> needs to be encoded with
+    <ulink url="https://tools.ietf.org/html/rfc3986#section-2.1">Percent-encoding</ulink>
+    if it includes symbols with special meaning in any of its parts.
     Here is an example where equal sign (<literal>=</literal>) is replaced
     with <literal>%3D</literal> and whitespace character with
     <literal>%20</literal>:
@@ -3368,6 +3368,16 @@ char *PQresultErrorField(const PGresult *res, int fieldcode);
           <listitem>
            <para>
             The name of the source-code function reporting the error.
+           </para>
+          </listitem>
+         </varlistentry>
+
+         <varlistentry id="libpq-pg-diag-rls-policy-name">
+          <term><symbol>PG_DIAG_RLS_POLICY_NAME</symbol></term>
+          <listitem>
+           <para>
+            The name of the row-level security policy that the new row
+            violates.
            </para>
           </listitem>
          </varlistentry>

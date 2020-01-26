@@ -1126,6 +1126,10 @@ pqBuildErrorMessage3(PQExpBuffer msg, const PGresult *res,
 		if (val)
 			appendPQExpBuffer(msg,
 							  libpq_gettext("CONSTRAINT NAME:  %s\n"), val);
+		val = PQresultErrorField(res, PG_DIAG_RLS_POLICY_NAME);
+		if (val)
+			appendPQExpBuffer(msg,
+							  libpq_gettext("RLS POLICY NAME:  %s\n"), val);
 	}
 	if (verbosity == PQERRORS_VERBOSE)
 	{

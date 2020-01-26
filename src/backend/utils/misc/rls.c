@@ -165,3 +165,11 @@ row_security_active_name(PG_FUNCTION_ARGS)
 	rls_status = check_enable_rls(tableoid, InvalidOid, true);
 	PG_RETURN_BOOL(rls_status == RLS_ENABLED);
 }
+
+int
+errrlspolname(const char *polname)
+{
+	err_generic_string(PG_DIAG_RLS_POLICY_NAME, polname);
+
+	return 0;					/* return value does not matter */
+}
